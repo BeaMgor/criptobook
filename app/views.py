@@ -105,4 +105,28 @@ def modificacompra():
 
     return redirect(url_for('index'))
 
+@app.route('/borracompra', methods=['GET'])
+def borracompra():
     
+    transacciones = open(ficherotransacciones, 'r')
+    newtransacciones = open(ficheronewtransacciones, 'w+')
+
+    registroseleccionado = int(request.form['registroseleccionado'])
+
+    lines= transacciones.readline()
+    for line in lines:
+        if line!= registroseleccionado+'\n':
+            newtransacciones.write(line)
+        
+    transacciones.close()
+    newtransacciones.close()
+    os.remove(ficherotransacciones)
+    os.rename(nuevoficherotransacciones, ficherotransacciones)
+
+    return redirect(url_for('index'))
+
+
+
+
+
+   

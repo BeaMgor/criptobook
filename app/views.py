@@ -44,6 +44,7 @@ def nuevacompra():
     if request.method == 'GET':
         if len(request.values) == 0 or request.values.get('btnselected') == 'Nueva':
             return render_template('nuevacompra.html')
+        #meter el borraregitro
         else:
             if request.values.get('ix') != None:
                 registroseleccionado = int(request.values.get('ix'))
@@ -105,11 +106,15 @@ def modificacompra():
 
     return redirect(url_for('index'))
 
-@app.route('/borracompra', methods=['GET'])
+@app.route('/borracompra', methods=['POST'])
 def borracompra():
+
+    if request.method == 'GET':
+        if len(request.values) == 0 or request.values.get('btnselected') == 'Borrar':
+            return render_template('borracompra.html')
     
     transacciones = open(ficherotransacciones, 'r')
-    newtransacciones = open(ficheronewtransacciones, 'w+')
+    newtransacciones = open(nuevoficherotransacciones, 'w+')
 
     registroseleccionado = int(request.form['registroseleccionado'])
 

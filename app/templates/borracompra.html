@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block title %} Borra registro {% endblock %}
 {% block body %}
-<h1>Borrar registro</h1>
-    <p>Quiere borrar el siguiente registro</p>
-    <form action="borraregistro" method="post">
+<h1>Borra registro</h1>
+    <p>¿Está seguro que quiere eliminar la siguiente entrada?</p>
+    <form action="borracompra" method="post">
         <input hidden type="number" name="registroseleccionado" value="{{ registro['registroseleccionado']}}">
         <div class="row">
             <div class="three columns">Fecha: </div>
@@ -12,20 +12,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="three columns">Fecha: </div>
+            <div class="three columns">Hora: </div>
             <div class="nine columns">
                 <input class="u-full-width" type="time" name="hora" id="hora" value="{{ registro['hora'] }}"><br/>
             </div>
-        </div>moviles pequeños
-        
+        </div>
         <div class="row">
-            <div class="three columns">Fecha: </div>
+            <div class="three columns">Concepto: </div>
             <div class="nine columns">
                 <input class="u-full-width" type="text" name="descripcion" id="descripcion"  value="{{ registro['descripcion'] }}"><br/>
             </div>
         </div>
         <div class="row">
-            <div class="three columns">Fecha: </div>
+            <div class="three columns">M. Comprada: </div>
             <div class="nine columns">
                 <select class="u-full-width" name="monedaComprada" id="monedaComprada"  value="{{ registro['monedaComprada'] }}">
                     <option value="EUR">Euro</option>
@@ -36,13 +35,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="three columns">Fecha: </div>
+            <div class="three columns">Cantidad: </div>
             <div class="nine columns">
                 <input class="u-full-width" type="number" name="cantidadComprada" id="cantidadComprada" step="0.001" value="{{ registro['cantidadComprada'] }}"><br/>
             </div>
         </div>
         <div class="row">
-            <div class="three columns">Fecha: </div>
+            <div class="three columns">M. Pagada: </div>
             <div class="nine columns">
                 <select class="u-full-width" name="monedaPagada" id="monedaPagada"  value="{{ registro['monedaPagada'] }}">
                     <option value="EUR">Euro</option>
@@ -53,12 +52,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="three columns">Fecha: </div>
+            <div class="three columns">Cantidad: </div>
             <div class="nine columns">
                 <input class="u-full-width" type="number" name="cantidadPagada" id="cantidadPagada" step="0.001" value="{{ registro['cantidadPagada'] }}"><br/>
             </div>
         </div>
         
         <input class="button-primary u-full-width" type="submit" value="Aceptar">
-    </form>
+        <input name='btnselected' type="submit" value="Cancelar">
+</form>
+
 {% endblock %}

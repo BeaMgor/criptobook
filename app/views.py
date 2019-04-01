@@ -16,6 +16,8 @@ def makeDict(lista):
 def makeReg(form):
     return '{},{},"{}",{},{},{},{}\n'.format(form['fecha'],form['hora'],form['descripcion'],form['monedaComprada'],form['cantidadComprada'],form['monedaPagada'],form['cantidadPagada'])
 
+    
+
 @app.route('/')
 def index():
     transacciones = open(ficherotransacciones, 'r')
@@ -44,20 +46,23 @@ def nuevacompra():
     if request.method == 'GET':
         if len(request.values) == 0 or request.values.get('btnselected') == 'Nueva':
             return render_template('nuevacompra.html')
-        #meter el borraregitro
-        else:
-            if request.values.get('ix') != None:
-                registroseleccionado = int(request.values.get('ix'))
-                transacciones = open(ficherotransacciones, 'r')
-                csvreader = csv.reader(transacciones, delimiter=',', quotechar='"' )
-                for numreg, registro in enumerate(csvreader):
-                    if numreg == registroseleccionado:
-                        camposdict = makeDict(registro)
-                        camposdict['registroseleccionado'] = registroseleccionado
+
+        elif request.values.get('ix') != None:
+            registroseleccionado = int(request.values.get('ix'))
+            transacciones = open(ficherotransacciones, 'r')
+            csvreader = csv.reader(transacciones, delimiter=',', quotechar='"' )
+            for numreg, registro in enumerate(csvreader):
+                if numreg == registroseleccionado:
+                    camposdict = makeDict(registro)
+                    camposdict['registroseleccionado'] = registroseleccionado
+                    if request.values.get('btnselected') == 'Editar':
+
                         return render_template('modificacompra.html', registro=camposdict)
-                return 'Movimiento no encontrado'
-            else:
-                return redirect(url_for('index'))
+                    else:
+                        return render_template('borracompra.html', registro=camposdict)
+            return 'Movimiento no encontrado'
+        else:
+            return redirect(url_for('index'))
     else:
         datos = request.form
         transacciones = open(ficherotransacciones, "a+")
@@ -108,28 +113,27 @@ def modificacompra():
 
 @app.route('/borracompra', methods=['POST'])
 def borracompra():
-
-    if request.method == 'GET':
-        if len(request.values) == 0 or request.values.get('btnselected') == 'Borrar':
-            return render_template('borracompra.html')
-    
     transacciones = open(ficherotransacciones, 'r')
     newtransacciones = open(nuevoficherotransacciones, 'w+')
-
+    
     registroseleccionado = int(request.form['registroseleccionado'])
 
-    lines= transacciones.readline()
-    for line in lines:
-        if line!= registroseleccionado+'\n':
-            newtransacciones.write(line)
-        
+    linea = transacciones.readline()
+    numreg = 0
+    while linea != "":
+        if numreg == registroseleccionado:
+            pass
+        else:    
+            newtransacciones.write(linea)
+        linea = transacciones.readline()
+        numreg += 1
+
     transacciones.close()
     newtransacciones.close()
     os.remove(ficherotransacciones)
     os.rename(nuevoficherotransacciones, ficherotransacciones)
 
     return redirect(url_for('index'))
-
 
 
 
